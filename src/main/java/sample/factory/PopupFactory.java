@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -24,7 +25,7 @@ public class PopupFactory {
         pane.getChildren().addAll(label, progressBar);
 
         stage.setScene(new Scene(pane, 200, 100));
-
+        stage.initModality(Modality.APPLICATION_MODAL);
         return stage;
     }
 }

@@ -1,12 +1,16 @@
 package sample.controller;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import sample.dto.UserCredentialsDto;
 import sample.factory.PopupFactory;
+import sample.rest.Authenticator;
+import sample.rest.AuthenticatorImpl;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -30,9 +34,12 @@ public class LoginController implements Initializable {
 
     private PopupFactory popupFactory;
 
+    private Authenticator authenticator;
+
 
     public LoginController() {
         popupFactory = new PopupFactory();
+        authenticator = new AuthenticatorImpl();
     }
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -62,7 +69,17 @@ public class LoginController implements Initializable {
 
         String loginText = loginTextField.getText();
         String passwordText = passwordTextField.getText();
-        
+
+        UserCredentialsDto dto = new UserCredentialsDto();
+        dto.setLogin(loginText);
+        dto.setPassword(passwordText);
+
+        authenticator.authenticate(dto, (authenticationResult) -> {
+            Platform.runLater(() -> {
+                waitingPopup.close();
+                System.out.println("Authentication result: " + authenticationResult);
+            });
+        });
     }
 }
 
