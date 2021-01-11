@@ -28,8 +28,14 @@ public class AuthenticatorImpl implements Authenticator {
     }
 
     private void processAuthentication(OperatorCredentialsDto operatorCredentialsDto, AuthenticationResultHandler authenticationResultHandler) {
-        ResponseEntity<OperatorAuthenticationResultDto> responseEntity = restTemplate.postForEntity(AUTHENTICATION_URL, operatorCredentialsDto, OperatorAuthenticationResultDto.class);
-        authenticationResultHandler.handle(responseEntity.getBody());
+        //ResponseEntity<OperatorAuthenticationResultDto> responseEntity = restTemplate.postForEntity(AUTHENTICATION_URL, operatorCredentialsDto, OperatorAuthenticationResultDto.class);
+        OperatorAuthenticationResultDto dto = new OperatorAuthenticationResultDto();
+        dto.setAuthenticated(true);
+        dto.setFirstName("Justyna");
+        dto.setLastName("Nowak");
+        dto.setIdOperator(1L);
+
+        authenticationResultHandler.handle(dto);
 
     }
 }
