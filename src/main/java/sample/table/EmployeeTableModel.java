@@ -1,6 +1,7 @@
 package sample.table;
 
 import javafx.beans.property.SimpleStringProperty;
+import sample.dto.EmployeeDto;
 
 public class EmployeeTableModel {
 
@@ -8,7 +9,7 @@ public class EmployeeTableModel {
     private final SimpleStringProperty lastName;
     private final SimpleStringProperty salary;
 
-    public EmployeeTableModel(String firstName, String lastName, String salary){
+    public EmployeeTableModel(String firstName, String lastName, String salary) {
         this.firstName = new SimpleStringProperty(firstName);
         this.lastName = new SimpleStringProperty(lastName);
         this.salary = new SimpleStringProperty(salary);
@@ -48,5 +49,12 @@ public class EmployeeTableModel {
 
     public void setSalary(String salary) {
         this.salary.set(salary);
+    }
+
+    public static EmployeeTableModel of(EmployeeDto dto) {
+        EmployeeTableModel model = new EmployeeTableModel(
+                dto.getFirstName(), dto.getLastName(), dto.getSalary()
+        );
+        return model;
     }
 }
