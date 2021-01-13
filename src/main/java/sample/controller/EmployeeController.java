@@ -27,6 +27,8 @@ import java.util.stream.Collectors;
 public class EmployeeController implements Initializable {
 
     private final EmployeeRestClient employeeRestClient;
+    private final ObservableList<EmployeeTableModel> data;
+
     @FXML
     private Button addButton;
     @FXML
@@ -36,18 +38,28 @@ public class EmployeeController implements Initializable {
     @FXML
     private Button deleteButton;
     @FXML
+    private Button refreshButton;
+    @FXML
     private TableView<EmployeeTableModel> tableView;
 
 
     public EmployeeController(){
         employeeRestClient = new EmployeeRestClient();
+        data = FXCollections.observableArrayList();
     }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeAddEmployeeButton();
+        initializeRefreshButton();
         initializeTableView();
+    }
+
+    private void initializeRefreshButton() {
+        refreshButton.setOnAction((x) -> {
+            loadEmployeeData();
+        });
     }
 
     private void initializeAddEmployeeButton() {
@@ -83,18 +95,17 @@ public class EmployeeController implements Initializable {
 
         tableView.getColumns().addAll(firstNameColumn, secondNameColumn, salaryColumn);
 
-        ObservableList<EmployeeTableModel> data = FXCollections.observableArrayList();
-
-        loadEmployeeData(data);
+        loadEmployeeData();
 
         tableView.setItems(data);
     }
 
-    private void loadEmployeeData(ObservableList<EmployeeTableModel> data) {
+    private void loadEmployeeData() {
 
         Thread thread = new Thread(() -> {
 
             List<EmployeeDto> employees = employeeRestClient.getEmployees();
+            data.clear();
             data.addAll(employees.stream().map(EmployeeTableModel::of).collect(Collectors.toList()));
         });
         thread.start();

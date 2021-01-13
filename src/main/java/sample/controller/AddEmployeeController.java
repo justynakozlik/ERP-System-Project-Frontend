@@ -51,9 +51,11 @@ public class AddEmployeeController implements Initializable {
             waitingPopup.show();
             employeeRestClient.saveEmployee(dto, () -> {
                 waitingPopup.close();
-                
+                Stage infoPopup = popupFactory.createInfoPopup("Employee has been saved", () -> {
+                    getStage().close();
+                });
+                infoPopup.show();
             });
-
         });
     }
 
