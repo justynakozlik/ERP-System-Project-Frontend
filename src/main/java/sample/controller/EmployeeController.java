@@ -57,8 +57,39 @@ public class EmployeeController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         initializeAddEmployeeButton();
         initializeViewEmployeeButton();
+        initializeEditEmployeeButton();
         initializeRefreshButton();
         initializeTableView();
+    }
+
+    private void initializeEditEmployeeButton() {
+        editButton.setOnAction((x) -> {
+            EmployeeTableModel selectedEmployee = tableView.getSelectionModel().getSelectedItem();
+            if(selectedEmployee!=null){
+                try {
+                    Stage waitingPopup = popupFactory.createWaitingPopup("Loading employee data...");
+                    waitingPopup.show();
+                    Stage editEmployeeStage = createEditEmployeeStage();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/edit-employee.fxml"));
+                    Scene scene = new Scene(loader.load(), 500, 400);
+                    editEmployeeStage.setScene(scene);
+                    EditEmployeeController controller = loader.getController();
+                    controller.loadEmployeeData(selectedEmployee.getIdEmployee(), () -> {
+                        waitingPopup.close();
+                        editEmployeeStage.show();
+                    });
+                } catch (IOException e) {
+                   throw new RuntimeException("Can't load fxml file: /fxml/edit-employee.fxml");
+                }
+            }
+        });
+    }
+
+    private Stage createEditEmployeeStage() {
+        Stage stage = new Stage();
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        return stage;
     }
 
     private void initializeViewEmployeeButton() {
