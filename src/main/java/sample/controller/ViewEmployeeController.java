@@ -31,13 +31,13 @@ public class ViewEmployeeController implements Initializable {
 
     public ViewEmployeeController(){
         employeeRestClient = new EmployeeRestClient();
-        firstNameTextField.setEditable(false);
-        lastNameTextField.setEditable(false);
-        salaryTextField.setEditable(false);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        firstNameTextField.setEditable(false);
+        lastNameTextField.setEditable(false);
+        salaryTextField.setEditable(false);
         initializeOkButton();
     }
 
@@ -48,6 +48,7 @@ public class ViewEmployeeController implements Initializable {
                 firstNameTextField.setText(dto.getFirstName());
                 lastNameTextField.setText(dto.getLastName());
                 salaryTextField.setText(dto.getSalary());
+                handler.handle();
             });
         });
         thread.start();

@@ -5,14 +5,16 @@ import sample.dto.EmployeeDto;
 
 public class EmployeeTableModel {
 
+    private final Long idEmployee;
     private final SimpleStringProperty firstName;
     private final SimpleStringProperty lastName;
     private final SimpleStringProperty salary;
 
-    public EmployeeTableModel(String firstName, String lastName, String salary) {
+    public EmployeeTableModel(Long idEmployee, String firstName, String lastName, String salary) {
         this.firstName = new SimpleStringProperty(firstName);
         this.lastName = new SimpleStringProperty(lastName);
         this.salary = new SimpleStringProperty(salary);
+        this.idEmployee = idEmployee;
     }
 
     public String getFirstName() {
@@ -51,9 +53,13 @@ public class EmployeeTableModel {
         this.salary.set(salary);
     }
 
+    public Long getIdEmployee() {
+        return idEmployee;
+    }
+
     public static EmployeeTableModel of(EmployeeDto dto) {
         EmployeeTableModel model = new EmployeeTableModel(
-                dto.getFirstName(), dto.getLastName(), dto.getSalary()
+                dto.getIdEmployee(), dto.getFirstName(), dto.getLastName(), dto.getSalary()
         );
         return model;
     }
