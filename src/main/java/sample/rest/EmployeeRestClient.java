@@ -33,4 +33,15 @@ public class EmployeeRestClient {
             //TODO implements
         }
     }
+
+    public EmployeeDto getEmployee(Long idEmployee) {
+        String url = EMPLOYEES_URL + "/" + idEmployee;
+        ResponseEntity<EmployeeDto> responseEntity = restTemplate.getForEntity(url, EmployeeDto.class);
+        if(HttpStatus.OK.equals(responseEntity.getStatusCode())){
+            return responseEntity.getBody();
+        }else {
+            //TODO implements
+            throw new RuntimeException("Can't load employee");
+        }
+    }
 }
