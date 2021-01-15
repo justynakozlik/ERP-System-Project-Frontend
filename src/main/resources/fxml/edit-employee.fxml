@@ -14,7 +14,7 @@
         </Label>
     </top>
     <bottom>
-        <GridPane BorderPane.alignment="CENTER">
+        <GridPane minHeight="70.0" BorderPane.alignment="CENTER">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

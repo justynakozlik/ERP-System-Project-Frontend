@@ -59,17 +59,37 @@ public class EmployeeController implements Initializable {
         initializeViewEmployeeButton();
         initializeEditEmployeeButton();
         initializeRefreshButton();
+        initializeDeleteEmployeeButton();
         initializeTableView();
+    }
+
+    private void initializeDeleteEmployeeButton() {
+        deleteButton.setOnAction((x) -> {
+            EmployeeTableModel selectedEmployee = tableView.getSelectionModel().getSelectedItem();
+            if (selectedEmployee != null) {
+                try {
+                    Stage deleteEmployeeStage = createCrudEmployeeStage();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/delete-employee.fxml"));
+                    Scene scene = new Scene(loader.load(), 400, 200);
+                    deleteEmployeeStage.setScene(scene);
+                    DeleteEmployeeController controller = loader.getController();
+                    controller.loadEmployeeData(selectedEmployee);
+                    deleteEmployeeStage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private void initializeEditEmployeeButton() {
         editButton.setOnAction((x) -> {
             EmployeeTableModel selectedEmployee = tableView.getSelectionModel().getSelectedItem();
-            if(selectedEmployee!=null){
+            if (selectedEmployee != null) {
                 try {
                     Stage waitingPopup = popupFactory.createWaitingPopup("Loading employee data...");
                     waitingPopup.show();
-                    Stage editEmployeeStage = createEditEmployeeStage();
+                    Stage editEmployeeStage = createCrudEmployeeStage();
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/edit-employee.fxml"));
                     Scene scene = new Scene(loader.load(), 500, 400);
                     editEmployeeStage.setScene(scene);
@@ -79,13 +99,13 @@ public class EmployeeController implements Initializable {
                         editEmployeeStage.show();
                     });
                 } catch (IOException e) {
-                   throw new RuntimeException("Can't load fxml file: /fxml/edit-employee.fxml");
+                    throw new RuntimeException("Can't load fxml file: /fxml/edit-employee.fxml");
                 }
             }
         });
     }
 
-    private Stage createEditEmployeeStage() {
+    private Stage createCrudEmployeeStage() {
         Stage stage = new Stage();
         stage.initStyle(StageStyle.UNDECORATED);
         stage.initModality(Modality.APPLICATION_MODAL);
