@@ -21,9 +21,9 @@
             <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" styleClass="employee-button" text="Delete" />
             <Button fx:id="refreshButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" styleClass="employee-button" text="Refresh" />
          </children>
-         <padding>
+         <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" top="10.0" />
-         </padding>
+         </BorderPane.margin>
       </HBox>
    </top>
    <stylesheets>
