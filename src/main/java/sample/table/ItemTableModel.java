@@ -2,6 +2,7 @@ package sample.table;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
+import sample.dto.ItemDto;
 
 public class ItemTableModel {
 
@@ -43,5 +44,10 @@ public class ItemTableModel {
 
     public SimpleStringProperty quantityTypeProperty() {
         return quantityType;
+    }
+
+    public static ItemTableModel of(ItemDto dto){
+        ItemTableModel itemTableModel = new ItemTableModel(dto.getIdItem(), dto.getName(), dto.getQuantity(), dto.getQuantityType());
+        return itemTableModel;
     }
 }

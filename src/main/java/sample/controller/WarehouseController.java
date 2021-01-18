@@ -1,5 +1,7 @@
 package sample.controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -7,10 +9,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+import sample.dto.ItemDto;
+import sample.rest.ItemRestClient;
 import sample.table.ItemTableModel;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class WarehouseController implements Initializable {
 
@@ -28,6 +34,15 @@ public class WarehouseController implements Initializable {
     private Button refreshButton;
     @FXML
     private TableView<ItemTableModel> tableView;
+
+    private final ItemRestClient itemRestClient;
+
+    private ObservableList<ItemTableModel> data;
+
+    public WarehouseController() {
+        itemRestClient = new ItemRestClient();
+        data = FXCollections.observableArrayList();
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -50,5 +65,18 @@ public class WarehouseController implements Initializable {
         quantityTypeColumn.setCellValueFactory(new PropertyValueFactory<ItemTableModel, String>("quantityType"));
 
         tableView.getColumns().addAll(nameColumn, quantityColumn, quantityTypeColumn);
+
+        tableView.setItems(data);
+
+        loadItemData();
+    }
+
+    private void loadItemData(){
+        Thread thread = new Thread(() -> {
+            List<ItemDto> items = itemRestClient.getItems();
+            data.clear();
+            data.addAll(items.stream().map(ItemTableModel::of).collect(Collectors.toList()));
+        });
+        thread.start();
     }
 }
