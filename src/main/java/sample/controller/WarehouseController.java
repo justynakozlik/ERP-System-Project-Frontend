@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -20,6 +21,8 @@ import java.util.stream.Collectors;
 
 public class WarehouseController implements Initializable {
 
+    @FXML
+    public ComboBox warehouseComboBox;
     @FXML
     private BorderPane warehouseBorderPane;
     @FXML
