@@ -1,5 +1,7 @@
 package sample.controller;
 
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -14,6 +16,7 @@ import sample.rest.ItemRestClient;
 import sample.rest.QuantityTypeRestClient;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddItemController implements Initializable {
@@ -57,10 +60,23 @@ public class AddItemController implements Initializable {
             itemSaveDto.setIdWarehouse(selectedWarehouseDto.getIdWarehouse());
             Thread thread = new Thread(() -> {
                 itemRestClient.saveItem(itemSaveDto, () -> {
-                  getStage().close();
+                    Platform.runLater(() -> {
+                        getStage().close();
+                    });
                 });
             });
+            thread.start();
         });
+    }
+
+    public void loadQuantityTypes(){
+        Thread thread = new Thread(() -> {
+            List<QuantityTypeDto> quantityTypes = quantityTypeRestClient.getQuantityTypes();
+            Platform.runLater(() -> {
+                quantityTypeComboBox.setItems(FXCollections.observableArrayList(quantityTypes));
+            });
+        });
+        thread.start();
     }
 
     private void initializeCancelButton() {
@@ -71,5 +87,9 @@ public class AddItemController implements Initializable {
 
     private Stage getStage() {
         return (Stage) addItemBorderPane.getScene().getWindow();
+    }
+
+    public void setSelectedWarehouse(WarehouseDto selectedWarehouseDto) {
+        this.selectedWarehouseDto = selectedWarehouseDto;
     }
 }

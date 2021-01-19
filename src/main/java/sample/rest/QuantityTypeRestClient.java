@@ -9,7 +9,7 @@ import java.util.List;
 
 public class QuantityTypeRestClient {
 
-    private static final String QUANTITY_TYPES_URL = "http://localhost:8080/quantity_types";
+    private static final String QUANTITY_TYPES_URL = "http://localhost:8080/quantityTypes";
 
     private final RestTemplate restTemplate;
 
