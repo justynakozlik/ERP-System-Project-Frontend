@@ -66,6 +66,34 @@ public class WarehouseController implements Initializable {
         initializeAddItemButton();
         initializeViewItemButton();
         initializeEditItemButton();
+        initializeDeleteItemButton();
+        initializeRefreshButton();
+    }
+
+    private void initializeRefreshButton() {
+        refreshButton.setOnAction((x) -> {
+            loadItemData();
+        });
+    }
+
+    private void initializeDeleteItemButton() {
+        deleteButton.setOnAction((x) -> {
+            ItemTableModel selectedItem = tableView.getSelectionModel().getSelectedItem();
+            if (selectedItem == null) {
+                return;
+            }
+            try {
+                Stage stage = createItemCrudStage();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/delete-item.fxml"));
+                Scene scene = new Scene(loader.load(), 500, 400);
+                stage.setScene(scene);
+                DeleteItemController controller = loader.getController();
+                controller.loadItem(selectedItem);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void initializeEditItemButton() {
@@ -191,8 +219,8 @@ public class WarehouseController implements Initializable {
     private void setWarehouseComboBoxItems(WarehouseModuleDto warehouseModuleDto) {
         List<WarehouseDto> warehouseDtoList = warehouseModuleDto.getWarehouseDtoList();
         ObservableList<WarehouseDto> warehouseComboBoxItems = FXCollections.observableArrayList();
-        warehouseComboBoxItems.addAll(warehouseDtoList);
         Platform.runLater(() -> {
+            warehouseComboBoxItems.addAll(warehouseDtoList);
             warehouseComboBox.setItems(warehouseComboBoxItems);
             warehouseComboBox.getSelectionModel().select(warehouseDtoList.indexOf(warehouseModuleDto.getSelectedWarehouse()));
         });

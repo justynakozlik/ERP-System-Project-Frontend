@@ -45,4 +45,8 @@ public class ItemRestClient {
         ResponseEntity<ItemEditViewDto> responseEntity = restTemplate.getForEntity(ITEM_EDIT_DATA_URL + "/" + idItem, ItemEditViewDto.class);
         return responseEntity.getBody();
     }
+
+    public void deleteItem(Long idItemToDelete) {
+        restTemplate.delete(ITEMS_URL + "/" + idItemToDelete);
+    }
 }
