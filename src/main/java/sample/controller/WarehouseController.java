@@ -65,6 +65,27 @@ public class WarehouseController implements Initializable {
         initializeComboBox();
         initializeAddItemButton();
         initializeViewItemButton();
+        initializeEditItemButton();
+    }
+
+    private void initializeEditItemButton() {
+        editButton.setOnAction((x) -> {
+            ItemTableModel selectedItem = tableView.getSelectionModel().getSelectedItem();
+            if (selectedItem == null) {
+                return;
+            }
+            try {
+                Stage stage = createItemCrudStage();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/edit-item.fxml"));
+                Scene scene = new Scene(loader.load(), 500, 400);
+                stage.setScene(scene);
+                EditItemController controller = loader.getController();
+                controller.loadItemData(selectedItem.getIdItem());
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void initializeViewItemButton() {
