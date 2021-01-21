@@ -16,7 +16,7 @@
 
 .background{
     -fx-background-color: -fx-primary-background;
-    -fx-boarder-color: -fx-primary-blue;
+    -fx-border-color: -fx-primary-blue;
 }
 
 .text{

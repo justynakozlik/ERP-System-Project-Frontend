@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -17,7 +16,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import sample.dto.ItemDto;
 import sample.dto.WarehouseDto;
 import sample.dto.WarehouseModuleDto;
 import sample.rest.ItemRestClient;
@@ -66,6 +64,28 @@ public class WarehouseController implements Initializable {
         initializeTableView();
         initializeComboBox();
         initializeAddItemButton();
+        initializeViewItemButton();
+    }
+
+    private void initializeViewItemButton() {
+        viewButton.setOnAction((x) -> {
+            ItemTableModel selectedItem = tableView.getSelectionModel().getSelectedItem();
+            if (selectedItem == null) {
+                return;
+            }
+            try {
+                Stage stage = createItemCrudStage();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/view-item.fxml"));
+                Scene scene = new Scene(loader.load(), 500, 400);
+                stage.setScene(scene);
+                ViewItemController controller = loader.getController();
+                controller.loadItemData(selectedItem.getIdItem());
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
     private void initializeAddItemButton() {
@@ -83,7 +103,6 @@ public class WarehouseController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         });
     }
 
